@@ -1,4 +1,4 @@
-import {BottleController} from "./Bottle.js";
+import {Bottle} from "./Bottle.js";
 import {View} from "./View.js";
 import {Timer} from "./Timer.js";
 
@@ -8,7 +8,7 @@ export default class HumanController {
         this.parent = parent;
         this.humanModel = new HumanModel();
         this.humanView = new HumanView(this);
-        this.bottle = new BottleController(this);
+        this.bottle = new Bottle(this);
 
         this.humanView.appendChild(this.bottle.bottleView.getDOM());
 
@@ -39,6 +39,14 @@ export default class HumanController {
     die() {
         this.humanView.die();
         this.humanModel.die();
+    }
+
+    sleep() {
+        this.humanView.sleep();
+    }
+
+    wakeUp() {
+        this.humanView.wakeUp();
     }
 
     topUp(){
@@ -83,8 +91,17 @@ class HumanView extends View {
     }
 
     die() {
-        this.face.innerHTML = "&#128532;"
+        this.face.innerHTML = "&#128532;";
     }
+
+    sleep() {
+        this.face.innerHTML = "&#128524;";
+    }
+
+    wakeUp() {
+        this.face.innerHTML = "&#128540;";
+    }
+
 }
 
-export {HumanController};
+export {HumanController as Human};

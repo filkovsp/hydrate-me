@@ -1,8 +1,8 @@
-import {HumanController} from "./Human.js";
+import {Human} from "./Human.js";
 
 export default class Game {
     static root = null;
-    static humanControllers = new Array();
+    static humans = new Array();
     static #isStarted = true;
 
     static init(root) {
@@ -11,39 +11,41 @@ export default class Game {
         }
 
         Game.root = root;
-        Game.humanControllers.push(new HumanController());
+        Game.humans.push(new Human());
 
-        Game.humanControllers.forEach(humanController => {
-            root.appendChild(humanController.getView().getDOM());
+        Game.humans.forEach(human => {
+            root.appendChild(human.getView().getDOM());
         });
 
         document.querySelector("#quantity-buttons > button#plus").addEventListener("click", event => {
-            let humanController = new HumanController();
-            Game.humanControllers.push(humanController);
-            Game.root.appendChild(humanController.getView().getDOM());
+            let human = new Human();
+            Game.humans.push(human);
+            Game.root.appendChild(human.getView().getDOM());
             if(!Game.#isStarted) {
-                humanController.timer.stop();
+                human.timer.stop();
             }
         });
 
         document.querySelector("#quantity-buttons > button#minus").addEventListener("click", event => {
-            if(Game.humanControllers.length > 1) {
-                let humanController = Game.humanControllers.pop();
-                Game.root.removeChild(humanController.getView().getDOM())
+            if(Game.humans.length > 1) {
+                let human = Game.humans.pop();
+                Game.root.removeChild(human.getView().getDOM())
             }
         });
 
         document.querySelector("#quantity-buttons > button#play").addEventListener("click", event => {
             if (Game.#isStarted) {
-                Game.humanControllers.forEach(humanController => {
-                    humanController.timer.stop();
+                Game.humans.forEach(human => {
+                    human.timer.stop();
+                    human.sleep();
                 });
                 Game.#isStarted = false;
                 event.target.innerHTML = "&#9658;";
                 
             } else {
-                Game.humanControllers.forEach(humanController => {
-                    humanController.timer.startTimer();
+                Game.humans.forEach(human => {
+                    human.timer.startTimer();
+                    human.wakeUp();
                 });
                 Game.#isStarted = true;
                 event.target.innerHTML = "&#9632;";

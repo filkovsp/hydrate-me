@@ -86,4 +86,4 @@ class BottleView extends View {
     }
 }
 
-export {BottleController};
+export {BottleController as Bottle};
