@@ -42,11 +42,15 @@ export default class HumanController {
     }
 
     sleep() {
-        this.humanView.sleep();
+        if(this.humanModel.isAlive) {
+            this.humanView.sleep();
+        }
     }
 
     wakeUp() {
-        this.humanView.wakeUp();
+        if(this.humanModel.isAlive) {
+            this.humanView.wakeUp();
+        }
     }
 
     topUp(){
