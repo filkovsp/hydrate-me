@@ -35,17 +35,16 @@ export default class Game {
 
         document.querySelector("#quantity-buttons > button#play").addEventListener("click", event => {
             if (Game.#isStarted) {
-                Game.humans.forEach(human => {
-                    human.timer.stop();
-                    human.sleep();
-                });
+                Game.humans
+                    .filter(human => human.isAlive())
+                    .forEach(human => human.sleep());
                 Game.#isStarted = false;
                 event.target.innerHTML = "&#9658;";
                 
             } else {
-                Game.humans.forEach(human => {
-                    human.timer.startTimer();
-                    human.wakeUp();
+                Game.humans
+                    .filter(human => human.isAlive())
+                    .forEach(human => {human.wakeUp();
                 });
                 Game.#isStarted = true;
                 event.target.innerHTML = "&#9632;";

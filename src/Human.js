@@ -2,7 +2,6 @@ import {Bottle} from "./Bottle.js";
 import {View} from "./View.js";
 import {Timer} from "./Timer.js";
 
-
 export default class HumanController {
     constructor(parent = null) {
         this.parent = parent;
@@ -41,15 +40,21 @@ export default class HumanController {
         this.humanModel.die();
     }
 
+    isAlive() {
+        return this.humanModel.isAlive;
+    }
+
     sleep() {
         if(this.humanModel.isAlive) {
             this.humanView.sleep();
+            this.timer.stop();
         }
     }
 
     wakeUp() {
         if(this.humanModel.isAlive) {
             this.humanView.wakeUp();
+            this.timer.startTimer();
         }
     }
 
