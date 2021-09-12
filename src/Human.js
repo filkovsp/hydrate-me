@@ -24,7 +24,7 @@ export default class HumanController {
 
         this.timer = new Timer();
         this.timer.addObserver(this);
-        this.wakeUp();
+        this.timer.startTimer(randomIntBetween(2, 5));
     }
 
     update() {
@@ -41,6 +41,10 @@ export default class HumanController {
     }
 
     drink() {
+        if(this.isDead()) {
+            return;
+        }
+
         this.bottle.drink();
         if(this.humanModel.isSleeping) {
             this.timer.stop();
@@ -55,15 +59,21 @@ export default class HumanController {
         return this.humanModel.isAlive;
     }
 
+    isDead() {
+        return !this.humanModel.isAlive;
+    }
+
     sleep() {
-        if(this.humanModel.isAlive) {
+        if(this.isAlive()) {
             this.humanView.sleep();
             this.humanModel.isSleeping = true;
+            this.timer.stop();
+            this.timer.startTimer(randomIntBetween(5, 7));
         }
     }
 
     wakeUp() {
-        if(this.humanModel.isAlive) {
+        if(this.isAlive()) {
             this.humanView.wakeUp();
             this.humanModel.isSleeping = false;
         }
