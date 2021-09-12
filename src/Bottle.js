@@ -1,10 +1,10 @@
 import {View} from "./View.js";
 
 export default class BottleController {
-    #CAPACITY = 10;
+    static CAPACITY = 10;
     constructor(parent) {
         this.parent = parent;    
-        this.bottleModel = new BottleModel(this.#CAPACITY);
+        this.bottleModel = new BottleModel(BottleController.CAPACITY);
         this.bottleView = new BottleView(this);
         this.bottleView.updateBottleLevel(this.getVolume());
     }
@@ -14,17 +14,17 @@ export default class BottleController {
     }
 
     getCapacity() {
-        return this.#CAPACITY;
+        return BottleController.CAPACITY;
     }
 
     fillUp() {
-        this.bottleModel.volume = this.#CAPACITY;
+        this.bottleModel.volume = BottleController.CAPACITY;
         this.bottleView.updateBottleLevel(this.getVolume());
         return true;
     }
 
     pour() {
-        if(this.bottleModel.volume <= this.#CAPACITY - 1) {
+        if(this.bottleModel.volume <= BottleController.CAPACITY - 1) {
             this.bottleModel.volume += 1;
             this.bottleView.updateBottleLevel(this.getVolume());
             return true;

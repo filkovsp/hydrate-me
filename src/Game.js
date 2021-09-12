@@ -3,7 +3,7 @@ import {Human} from "./Human.js";
 export default class Game {
     static root = null;
     static humans = new Array();
-    static #isStarted = true;
+    static isStarted = true;
 
     static init(root) {
         if(root == undefined || root == null) {
@@ -21,7 +21,7 @@ export default class Game {
             let human = new Human();
             Game.humans.push(human);
             Game.root.appendChild(human.getView().getDOM());
-            if(!Game.#isStarted) {
+            if(!Game.isStarted) {
                 human.sleep();
             }
         });
@@ -34,11 +34,11 @@ export default class Game {
         });
 
         document.querySelector("#quantity-buttons > button#play").addEventListener("click", event => {
-            if (Game.#isStarted) {
+            if (Game.isStarted) {
                 Game.humans
                     .filter(human => human.isAlive())
                     .forEach(human => human.sleep());
-                Game.#isStarted = false;
+                Game.isStarted = false;
                 event.target.innerHTML = "&#9658;";
                 
             } else {
@@ -46,7 +46,7 @@ export default class Game {
                     .filter(human => human.isAlive())
                     .forEach(human => {human.wakeUp();
                 });
-                Game.#isStarted = true;
+                Game.isStarted = true;
                 event.target.innerHTML = "&#9632;";
             }
             
