@@ -22,7 +22,7 @@ export default class Game {
             Game.humans.push(human);
             Game.root.appendChild(human.getView().getDOM());
             if(!Game.#isStarted) {
-                human.timer.stop();
+                human.sleep();
             }
         });
 

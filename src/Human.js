@@ -1,6 +1,7 @@
 import {Bottle} from "./Bottle.js";
 import {View} from "./View.js";
 import {Timer} from "./Timer.js";
+import {randomIntBetween} from "./Utils.js";
 
 export default class HumanController {
     constructor(parent = null) {
@@ -23,21 +24,31 @@ export default class HumanController {
 
         this.timer = new Timer();
         this.timer.addObserver(this);
-        this.timer.startTimer();
+        this.wakeUp();
     }
 
     update() {
         if(this.bottle.isEmpty()) {
             this.die();
         } else {
-            this.bottle.drink();
-            this.timer.startTimer();
+            this.drink();
         }
     }
 
     die() {
         this.humanView.die();
         this.humanModel.die();
+    }
+
+    drink() {
+        this.bottle.drink();
+        if(this.humanModel.isSleeping) {
+            this.timer.stop();
+            this.timer.startTimer(randomIntBetween(5, 7));
+        } else {
+            this.timer.stop();
+            this.timer.startTimer(randomIntBetween(1, 3));
+        }
     }
 
     isAlive() {
@@ -47,19 +58,20 @@ export default class HumanController {
     sleep() {
         if(this.humanModel.isAlive) {
             this.humanView.sleep();
-            this.timer.stop();
+            this.humanModel.isSleeping = true;
         }
     }
 
     wakeUp() {
         if(this.humanModel.isAlive) {
             this.humanView.wakeUp();
-            this.timer.startTimer();
+            this.humanModel.isSleeping = false;
         }
+        this.drink();
     }
 
     topUp(){
-        if(this.humanModel.isAlive) {
+        if(this.isAlive()) {
             this.bottle.pour();
         }
     }
@@ -72,6 +84,7 @@ export default class HumanController {
 class HumanModel {
     constructor() {
         this.isAlive = true;
+        this.isSleeping = false;
     }
 
     die() {
@@ -91,8 +104,8 @@ class HumanView extends View {
 
         this.face = document.createElement("p");
         this.face.className = "human-face";
-        this.face.innerHTML = "&#128540;";
         this.root.appendChild(this.face);
+        this.wakeUp();
     }
 
     appendChild(child) {

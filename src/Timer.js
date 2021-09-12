@@ -9,10 +9,6 @@ export default class Timer extends Observable {
     }
     
     startTimer(seconds) {
-        if(seconds == undefined || seconds == null) {
-            seconds = Math.floor(Math.random() * 5) + 2;
-        }
-
         this.timerId = setTimeout(() => {
             this.notifyAll(null);
         }, seconds * 1000);
