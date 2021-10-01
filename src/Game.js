@@ -17,7 +17,7 @@ export default class Game {
             root.appendChild(human.getView().getDOM());
         });
 
-        document.querySelector("#quantity-buttons > button#plus").addEventListener("click", event => {
+        document.querySelector("#control-buttons > button#plus").addEventListener("click", event => {
             let human = new Human();
             Game.humans.push(human);
             Game.root.appendChild(human.getView().getDOM());
@@ -26,14 +26,14 @@ export default class Game {
             }
         });
 
-        document.querySelector("#quantity-buttons > button#minus").addEventListener("click", event => {
+        document.querySelector("#control-buttons > button#minus").addEventListener("click", event => {
             if(Game.humans.length > 1) {
                 let human = Game.humans.pop();
                 Game.root.removeChild(human.getView().getDOM())
             }
         });
 
-        document.querySelector("#quantity-buttons > button#play").addEventListener("click", event => {
+        document.querySelector("#control-buttons > button#play").addEventListener("click", event => {
             if (Game.isStarted) {
                 Game.humans
                     .filter(human => human.isAlive())

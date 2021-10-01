@@ -62,7 +62,7 @@ button {
     color: white;
 }
 
-#quantity-buttons {
+#control-buttons {
     display: flex;
     flex-direction: row;
     justify-content:center;
