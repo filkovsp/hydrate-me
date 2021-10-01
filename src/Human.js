@@ -15,7 +15,7 @@ export default class HumanController {
         let btnTopUp = document.createElement("button");
         btnTopUp.className = "btn-top-up";
         btnTopUp.textContent = "Top me up!";
-        btnTopUp.id = this.id;
+
         btnTopUp.addEventListener("click", event => {
             this.topUp();
         });
@@ -25,6 +25,20 @@ export default class HumanController {
         this.timer = new Timer();
         this.timer.addObserver(this);
         this.timer.startTimer(randomIntBetween(2, 5));
+        
+        this.wakeUp();
+    }
+
+    isAlive() {
+        return this.humanModel.isAlive;
+    }
+
+    isDead() {
+        return !this.humanModel.isAlive;
+    }
+
+    getView() {
+        return this.humanView;
     }
 
     update() {
@@ -35,9 +49,10 @@ export default class HumanController {
         }
     }
 
-    die() {
-        this.humanView.die();
-        this.humanModel.die();
+    topUp(){
+        if(this.isAlive()) {
+            this.bottle.pour();
+        }
     }
 
     drink() {
@@ -55,17 +70,14 @@ export default class HumanController {
         }
     }
 
-    isAlive() {
-        return this.humanModel.isAlive;
-    }
-
-    isDead() {
-        return !this.humanModel.isAlive;
+    die() {
+        this.humanView.setFace("&#128532;");
+        this.humanModel.isAlive = false;
     }
 
     sleep() {
         if(this.isAlive()) {
-            this.humanView.sleep();
+            this.humanView.setFace("&#128524;");
             this.humanModel.isSleeping = true;
             this.timer.stop();
             this.timer.startTimer(randomIntBetween(5, 7));
@@ -74,31 +86,18 @@ export default class HumanController {
 
     wakeUp() {
         if(this.isAlive()) {
-            this.humanView.wakeUp();
+            this.humanView.setFace("&#128540;");
             this.humanModel.isSleeping = false;
         }
         this.drink();
     }
 
-    topUp(){
-        if(this.isAlive()) {
-            this.bottle.pour();
-        }
-    }
-
-    getView() {
-        return this.humanView;
-    }
 }
 
 class HumanModel {
     constructor() {
         this.isAlive = true;
         this.isSleeping = false;
-    }
-
-    die() {
-        this.isAlive = false;
     }
 }
 
@@ -115,25 +114,21 @@ class HumanView extends View {
         this.face = document.createElement("p");
         this.face.className = "human-face";
         this.root.appendChild(this.face);
-        this.wakeUp();
+        // this.wakeUp();
     }
 
     appendChild(child) {
         this.root.append(child);
     }
 
-    die() {
-        this.face.innerHTML = "&#128532;";
+    setFace(faceCode) {
+        /* 
+            More about emojis here: 
+            https://www.w3schools.com/charsets/ref_emoji_smileys.asp 
+            https://www.w3schools.com/charsets/ref_emoji.asp
+        */
+        this.face.innerHTML = faceCode;
     }
-
-    sleep() {
-        this.face.innerHTML = "&#128524;";
-    }
-
-    wakeUp() {
-        this.face.innerHTML = "&#128540;";
-    }
-
 }
 
 export {HumanController as Human};
